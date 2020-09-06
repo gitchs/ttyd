@@ -4,6 +4,10 @@ ttyd is a simple command-line tool for sharing terminal over the web.
 
 ![screenshot](https://github.com/tsl0922/ttyd/raw/master/screenshot.gif)
 
+# Extend Environment
+## CREDENTIAL
+A replacement for option `-c`
+
 # Features
 
 - Built on top of [Libwebsockets](https://libwebsockets.org) with [libuv](https://libuv.org) for speed

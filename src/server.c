@@ -81,7 +81,7 @@ static void print_help() {
           "OPTIONS:\n"
           "    -p, --port              Port to listen (default: 7681, use `0` for random port)\n"
           "    -i, --interface         Network interface to bind (eg: eth0), or UNIX domain socket path (eg: /var/run/ttyd.sock)\n"
-          "    -c, --credential        Credential for Basic Authentication (format: username:password)\n"
+          "    -c, --credential        Credential for Basic Authentication (format: username:password). Environment `CREDENTIAL` also works\n"
           "    -u, --uid               User id to run with\n"
           "    -g, --gid               Group id to run with\n"
           "    -s, --signal            Signal to send to the command when exit it (default: 1, SIGHUP)\n"
@@ -436,6 +436,12 @@ int main(int argc, char **argv) {
         print_help();
         return -1;
     }
+  }
+  if (server->credential == NULL) {
+	  char* env_credential = getenv("CREDENTIAL");
+	  if (env_credential != NULL && strchr(env_credential, ':') != NULL) {
+		  server->credential = base64_encode((const unsigned char *)env_credential, strlen(env_credential));
+	  }
   }
   server->prefs_json = strdup(json_object_to_json_string(client_prefs));
   json_object_put(client_prefs);
